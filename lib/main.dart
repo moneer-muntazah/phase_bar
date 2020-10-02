@@ -32,7 +32,7 @@ class MyHomePage extends StatelessWidget {
         child: PhaseBar(
           phases: <Phase>[
             Phase(text: "One"),
-            Phase(text: "One"),
+            Phase(text: "One", completed: true),
             Phase(text: "One"),
             Phase(text: "One"),
             Phase(text: "One"),

@@ -61,23 +61,33 @@ class PhaseBarPainter extends CustomPainter {
     // canvas.drawCircle(p1 + Offset(d, 0.0), r, paint);
     // canvas.drawCircle(p1 + Offset(d + d, 0.0), r, paint);
     //
+    // TODO: clean up your act.
     for (int i = 0; i < phases.length; i += 1) {
-      final circleOffset = Offset(p1.dx + equalDistance * i, p1.dy);
-      final circlePaint = paint;
-      circlePaint.style = PaintingStyle.fill;
-      canvas.drawCircle(circleOffset, r, circlePaint);
 
-      final icon = Icons.done;
-      final iconOffset = Offset(2.0 + (equalDistance * i), p1.dy - 12.0);
-      TextPainter(
-          text: TextSpan(
-              text: String.fromCharCode(icon.codePoint),
-              style: TextStyle(color: Colors.black, fontFamily: icon.fontFamily,
-              fontSize: 25)),
-          textAlign: TextAlign.right,
-          textDirection: TextDirection.ltr)
-        ..layout()
-        ..paint(canvas, iconOffset);
+      if (phases[i].completed == null) {
+        final circleOffset = Offset(p1.dx + equalDistance * i, p1.dy);
+        canvas.drawCircle(circleOffset, r, paint);
+      }
+      else if (phases[i].completed) {
+        final circleOffset = Offset(p1.dx + equalDistance * i, p1.dy);
+        final circlePaint = Paint()
+          ..color = Colors.redAccent
+          ..style = PaintingStyle.fill
+          ..strokeWidth = 2.0;
+        canvas.drawCircle(circleOffset, r, circlePaint);
+
+        final icon = Icons.done;
+        final iconOffset = Offset(2.0 + (equalDistance * i), p1.dy - 13.0);
+        TextPainter(
+            text: TextSpan(
+                text: String.fromCharCode(icon.codePoint),
+                style: TextStyle(color: Colors.white, fontFamily: icon.fontFamily,
+                    fontSize: 25)),
+            textAlign: TextAlign.right,
+            textDirection: TextDirection.ltr)
+          ..layout()
+          ..paint(canvas, iconOffset);
+      }
 
       final textOffset = Offset(equalDistance * i, p1.dy + 20.0);
       TextPainter(
