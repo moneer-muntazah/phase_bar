@@ -34,12 +34,12 @@ class PhaseBarPainter extends CustomPainter {
   final List<Phase> phases;
   final TextDirection textDirection;
 
-  PhaseBarPainter({@required this.phases, this.textDirection = TextDirection.rtl})
+  PhaseBarPainter(
+      {@required this.phases, this.textDirection = TextDirection.rtl})
       : assert(phases != null && phases.length >= 2 && textDirection != null);
 
   @override
   void paint(Canvas canvas, Size size) {
-
     final paint = Paint()
       ..color = Colors.redAccent
       ..style = PaintingStyle.stroke
@@ -49,11 +49,9 @@ class PhaseBarPainter extends CustomPainter {
 
     final equalDistance = (size.width - 2 * r) / (phases.length - 1);
 
-    final x1 = r, y1 = size.height / 2;
+    final x1 = r, y1 = size.height / 3;
     final x2 = size.width, y2 = size.height / 2;
     final p1 = Offset(x1, y1), p2 = Offset(x2, y2);
-
-    Offset distance(double dx) => Offset(dx, 0.0);
 
     //
     // canvas.drawLine(p1, p2, paint);
@@ -64,7 +62,30 @@ class PhaseBarPainter extends CustomPainter {
     // canvas.drawCircle(p1 + Offset(d + d, 0.0), r, paint);
     //
     for (int i = 0; i < phases.length; i += 1) {
-      canvas.drawCircle(p1 + distance(equalDistance * i), r, paint);
+      final circleOffset = Offset(p1.dx + equalDistance * i, p1.dy);
+      final circlePaint = paint;
+      circlePaint.style = PaintingStyle.fill;
+      canvas.drawCircle(circleOffset, r, circlePaint);
+
+      final icon = Icons.done;
+      final iconOffset = Offset(2.0 + (equalDistance * i), p1.dy - 12.0);
+      TextPainter(
+          text: TextSpan(
+              text: String.fromCharCode(icon.codePoint),
+              style: TextStyle(color: Colors.black, fontFamily: icon.fontFamily,
+              fontSize: 25)),
+          textAlign: TextAlign.right,
+          textDirection: TextDirection.ltr)
+        ..layout()
+        ..paint(canvas, iconOffset);
+
+      final textOffset = Offset(equalDistance * i, p1.dy + 20.0);
+      TextPainter(
+          text: TextSpan(text: "text", style: TextStyle(color: Colors.black)),
+          textAlign: TextAlign.right,
+          textDirection: TextDirection.ltr)
+        ..layout()
+        ..paint(canvas, textOffset);
     }
 
     //
@@ -74,12 +95,6 @@ class PhaseBarPainter extends CustomPainter {
     // //
     // // canvas.drawParagraph(b.build(), p1);
     //
-    // TextPainter(
-    //     text: TextSpan(text: "text"),
-    //     textAlign: TextAlign.left,
-    //     textDirection: TextDirection.ltr)
-    //   ..layout()
-    //   ..paint(canvas, p1);
   }
 
   @override
