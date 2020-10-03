@@ -1,3 +1,4 @@
+import "dart:ui" as ui;
 import "package:flutter/material.dart";
 import "package:flutter/foundation.dart" show required;
 
@@ -67,10 +68,10 @@ class StagesBarPainter extends CustomPainter {
           ..strokeWidth = 2.0;
 
     for (int i = 0; i < phases.length; i += 1) {
-      final double endpoint = distance * i;
+      final double leftPoint = distance * i;
 
       canvas.drawCircle(
-          Offset(radius + endpoint, dy),
+          Offset(radius + leftPoint, dy),
           radius,
           phases[i].status == PhaseStatus.Done
               ? fillPaint
@@ -96,7 +97,7 @@ class StagesBarPainter extends CustomPainter {
       final next = i + 1.0;
       if (next < phases.length) {
         canvas.drawLine(
-            Offset(radius * 2 + endpoint, dy),
+            Offset(radius * 2 + leftPoint, dy),
             Offset(distance * next, dy),
             phases[textDirection == TextDirection.rtl ? i : next.toInt()]
                         .status ==
@@ -107,11 +108,12 @@ class StagesBarPainter extends CustomPainter {
 
       TextPainter(
           text: TextSpan(
-              text: phases[i].text, style: TextStyle(color: Colors.black)),
-          // textAlign: TextAlign.left,
+              text: phases[i].text, style: TextStyle(color: Colors.black,
+          fontSize: 15)),
+          textAlign: TextAlign.center,
           textDirection: textDirection)
-        ..layout()
-        ..paint(canvas, Offset(distance * i, dy + 20.0));
+        ..layout(minWidth: distance, maxWidth: distance)
+        ..paint(canvas, Offset(leftPoint + radius - (distance / 2), dy + 20.0));
     }
   }
 
