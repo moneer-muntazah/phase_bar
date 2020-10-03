@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import "package:flutter_app_paint/phase_bar.dart";
+import "package:flutter_app_paint/stages_bar.dart";
 
 void main() {
   runApp(MyApp());
@@ -29,13 +29,14 @@ class MyHomePage extends StatelessWidget {
         title: Text("PhaseBar"),
       ),
       body: Center(
-        child: PhaseBar(
+        child: StagesBar(
+          textDirection: TextDirection.rtl,
           phases: <Phase>[
-            Phase(text: "One"),
-            Phase(text: "One", completed: true),
-            Phase(text: "One"),
-            Phase(text: "One"),
-            Phase(text: "One"),
+            Phase(text: "قيد المراجعة", status: PhaseStatus.Done),
+            Phase(text: "قيد التجهيز", status: PhaseStatus.Done),
+            Phase(text: "قيد التوصيل", status: PhaseStatus.Done),
+            Phase(text: "مكتمل", status: PhaseStatus.InProgress),
+            Phase(text: "ملغى"),
           ],
         ),
       ),
